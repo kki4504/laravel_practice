@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,17 +23,19 @@ class PostsController extends Controller
     public function show(Request $request, $id) {
             $page = $request -> page;
             $post   = Post::find($id);
+            $post -> count++;   // 조회수 증가 시킴
+            $post -> save();    // DB에 저장
 
             return view('posts.show', compact('post', 'page'));
     }
-    public function edit($id) 
+    public function edit(Request $request, Post $post) 
     {
         // 수정 폼 생성
-        $post = Post::find($id);
+        // $post = Post::find($);
         // where 쓰느 방법
         // $post = Post::where('id', $id)->('name', 'kki');
         // return view('posts.edit') -> with('post', $post);
-        return view('posts.edit') -> with('post', $post);
+        return view('posts.edit', ['post' => $post, 'page' => $request -> page]);
     }
     public function update(Request $request, $id)
     {
@@ -44,7 +47,16 @@ class PostsController extends Controller
             'imageFile' => 'image | max:1000000'
         ]);
         $post = Post::find($id);
+        $page = $request -> page;
 
+        // Authorization. 즉 권한이 있는지 검사
+        // 즉, 로그인한 사용자와 게시글의 작성자가 같은지 체크
+        // if (auth() -> user() -> id != $post -> user_id) {
+        //     abort(403);
+        // }
+        if ($request -> user() -> cannot('update', $post)) {
+            abort (403);
+        }
         $post           -> title    = $request -> title;
         $post           -> content  = $request -> content;
 
@@ -56,13 +68,30 @@ class PostsController extends Controller
         }
         $post           -> save();
         
-        return redirect() -> route('posts.show', ['id' => $id]);
+        return redirect() -> route('posts.show', ['id' => $id, 'page' => $page]);
     }
-    public function destroy($id) 
+    public function destroy(Request $request, $id) 
     {
         // 파일 시스템에서 이미지 파일 삭제
         // 게시글을 데이터베이스에서 삭제
+        $page = $request -> page;
+        $post = Post::find($id);
 
+        // Authorization. 즉 권한이 있는지 검사
+        // 즉, 로그인한 사용자와 게시글의 작성자가 같은지 체크
+        // if (auth() -> user() -> id != $post -> user_id) {
+        //     abort(403);
+        // }
+        if($request -> user() -> cannot('delete', $post)) {
+            abort(403);
+        }
+
+        if ($post -> image) {
+            $imagePath = '/public/images/' . $post -> image;
+            Storage::delete($imagePath);
+        }
+        $post -> delete();
+        return redirect() -> route('posts.index', ['page' => $page]);
     }
 
     public function create() {
@@ -147,4 +176,19 @@ class PostsController extends Controller
         // dd($posts[0]->created_at);
         return view('posts.index', ['posts' => $posts]);
     }
+
+    public function myIndex(){
+        // 교수님 
+        // $posts = auth() -> user() -> posts() -> orderBy('title', 'asc') -> orderBy('created_at', 'desc') -> paginate(5);
+        $posts = User::find(Auth::user()->id)->posts()->orderBy('title', 'asc')->orderBy('created_at', 'desc')->paginate(5);
+ 
+        return view('posts.myIndex', ['posts' => $posts]);
+    }
+
+    // public function viewCount(Request $request) {
+    //     $user_id = auth() -> user();
+    //     $post_id = $request -> id;
+
+        
+    // }
 }

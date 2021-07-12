@@ -23,4 +23,9 @@ class Post extends Model
 
         return $path.$imageFile;
     }
+    // 내가 연결하고 싶은것 이름
+    public function user() {   
+        return $this->belongsTo(User::class);
+
+    }
 }

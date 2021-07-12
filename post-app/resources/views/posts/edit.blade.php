@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="container mt-5">                                     <!-- DB로 파일 보내는HTML 작성시 반드시 필요함-->
-        <form action="{{ route('posts.update', ['id' => $post -> id]) }}" method="post" autocomplete="off" enctype="multipart/form-data">
+        <form action="{{ route('posts.update', ['id' => $post -> id, 'page' => $page]) }}" method="post" autocomplete="off" enctype="multipart/form-data">
             @csrf       <!-- 토큰발행 -->
             @method("put")
             {{-- method spoofing --}}

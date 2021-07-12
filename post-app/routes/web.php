@@ -40,21 +40,22 @@ Route::get('/test4', [TestController::class, 'index']);
 
 //PostsController 에 정의된 function 실행
 //create function 실행
-Route::get('/posts/create'   , [PostsController::class, 'create'])  -> name('posts.create')/* -> middleware(['auth'])*/;
+Route::get('/posts/create'   ,  [PostsController::class, 'create'])  -> name('posts.create')/* -> middleware(['auth'])*/;
 
 //store function 실행
-Route::post('/posts/store'   , [PostsController::class, 'store'])   -> name('posts.store')/* -> middleware(['auth'])*/;
+Route::post('/posts/store'   ,  [PostsController::class, 'store'])   -> name('posts.store')/* -> middleware(['auth'])*/;
 
 //index function 실행
-Route::get('/posts/index'    , [PostsController::class, 'index'])   -> name('posts.index');
+Route::get('/posts/index'    ,  [PostsController::class, 'index'])   -> name('posts.index');
 
+Route::get('/posts/myIndex'  ,  [PostsController::class, 'myIndex']) -> name('posts.myIndex');
 
 //Show 관련
 //edit function 실행
-Route::get('/posts/show/{id}', [PostsController::class, 'show'])    -> name('posts.show');
+Route::get('/posts/show/{id}',  [PostsController::class, 'show'])    -> name('posts.show');
 
-Route::get('/posts/{post}',      [PostsController::class, 'edit'])    -> name('posts.edit');
+Route::get('/posts/{post}',     [PostsController::class, 'edit'])    -> name('posts.edit');
 
-Route::put('/posts/{id}',      [PostsController::class, 'update'])  -> name('posts.update');
+Route::put('/posts/{id}',       [PostsController::class, 'update'])  -> name('posts.update');
 
-Route::delete('/posts/{id}',   [PostsController::class, 'destroy']) -> name('posts.delete');
+Route::delete('/posts/{id}',    [PostsController::class, 'destroy']) -> name('posts.delete');

@@ -22,7 +22,7 @@
             </div>
             <div class="form-group">
                 <label for="content">Content</label></label>
-                <textarea class="form-control" readonly name="content" rows="5">{{ $post -> content }}</textarea>
+                <div readonly name="content" id="content">{!! $post -> content !!}</div>
             </div>
             {{-- src 짧게 쓰는 방법 --}}
             <div class="form-group">
@@ -48,13 +48,28 @@
             </div>
             <div class="form-group">
                 <label>작성자</label>
-                <textarea type="text" readonly class="form-control">{{ $post -> user_id }}</textarea>
+                <input type="text" readonly class="form-control" value="{{ $post -> user -> name }}">
             </div>
-            <div class="form-group">
-                <a class="btn btn-warning" href = "{{ route('posts.edit' , ['post'=> $post -> id]) }}">수정</a>
-                <a class="btn btn-danger"  href = "{{ route('posts.delete', ['id'=> $post -> id]) }}">삭제</a>
-                {{-- <button class="btn btn-primary" onclick = "location.href = {{ route('posts.index', [ 'page' => 1])  }}">목록보기</button> --}}
-            </div>
+
+            {{-- authentication --}}
+            @auth
+                {{-- authorization --}}
+                {{-- @if (auth() -> user() -> id == $post -> user_id) --}}
+                @can('update', $post)
+                    <div class="flex">
+                        <a class="btn btn-warning" href = "{{ route('posts.edit' , ['post'=> $post -> id, 'page' => $page]) }}">수정</a>
+
+                        {{-- delete form --}}
+                        <form action = "{{ route('posts.delete', ['id' => $post -> id, 'page' => $page]) }}" method="post">
+                            @csrf
+                            @method("delete")
+                            <button type = "submit" class = "btn btn-danger">삭제</button>
+                        </form>
+                    </div>
+                @endcan
+                {{-- @endif --}}
+            @endauth
+            {{-- <button class="btn btn-primary" onclick = "location.href = {{ route('posts.index', [ 'page' => 1])  }}">목록보기</button> --}}
     </div>
 </body>
 </html>

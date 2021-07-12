@@ -12,37 +12,29 @@
 </head>
 <body>
     <div class="container mt-5">
-        <a href="{{ route('dashboard') }}" class="btn btn-outline-dark mb-3">Dashboard</a>
+        <a href="{{ route('dashboard') }}">Dashboard</a>
         <h1>게시글 리스트</h1>
         @auth 
-            <a href="/posts/create" class="btn btn-outline-dark">게시글 작성</a>
+            <a href="/posts/create" class="btn btn-primary">게시글 작성</a>
         @endauth
         <ul class="list-group">
             @foreach($posts as $post)
             <li class="list-group-item">
-                <div>
-                    <span>
-                        <a href="{{ route('posts.show', ['id'=>$post->id, 'page'=>$posts->currentPage()]) }}">Title : {{ $post->title }}</a>
-                    </span>
-                    <span style="float: right">written on {{ $post->created_at->diffForHumans() }}</span>
-                </div>
+                <span>
+                    <a href="{{ route('posts.show', ['id'=>$post->id, 'page'=>$posts->currentPage()]) }}">Title : {{ $post->title }}</a>
+                </span>
 
                 {{-- 컨텐츠 표시 --}}
                 {{-- <div>
-
                     content : {{ $post->content }}
                 </div> --}}
-                <div class="mb-2">
-                    <span style="float: right">
-                        {{ $post -> count }} 
-                        {{ $post -> count > 0 ? Str::plural('view', $post -> count) : 'view' }}  <!-- view 복수로 표시하는 방법 -->
-                    </span>
-                </div>
                 
+                <span>written on {{ $post->created_at->diffForHumans() }}</span>
+                <hr>
             </li>
             @endforeach
         </ul>
-        <div class="mt-5">
+        <div class="mt-5" style="size: 10px">
             {{-- 자동 링크생성 --}}
             {{ $posts -> links() }}
         </div>
