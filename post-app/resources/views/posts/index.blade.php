@@ -34,8 +34,8 @@
                 </div> --}}
                 <div class="mb-2">
                     <span style="float: right">
-                        {{ $post -> count }} 
-                        {{ $post -> count > 0 ? Str::plural('view', $post -> count) : 'view' }}  <!-- view 복수로 표시하는 방법 -->
+                        {{ $post -> viewers -> count() }} 
+                        {{ $post -> viewers -> count() > 0 ? Str::plural('view', $post -> viewers -> count()) : 'view' }}  <!-- view 복수로 표시하는 방법 -->
                     </span>
                 </div>
                 

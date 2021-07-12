@@ -23,9 +23,17 @@ class PostsController extends Controller
     public function show(Request $request, $id) {
             $page = $request -> page;
             $post   = Post::find($id);
-            $post -> count++;   // 조회수 증가 시킴
-            $post -> save();    // DB에 저장
-
+            // $post -> count++;   // 조회수 증가 시킴
+            // $post -> save();    // DB에 저장
+            /*
+            이 글을 조회한 사용자 중에, 현재
+            로그인한 사용자가 포함되어 있는지를 체크 하고,
+            포함되어 있지 않으면 추가,
+            포함되어 있으면 다음 단계로 넘어감,
+            */
+            if(Auth::user() != null && !$post -> viewers -> contains(Auth::user())){ 
+                $post -> viewers() -> attach(Auth::user() -> id);
+            }
             return view('posts.show', compact('post', 'page'));
     }
     public function edit(Request $request, Post $post) 
@@ -182,7 +190,7 @@ class PostsController extends Controller
         // $posts = auth() -> user() -> posts() -> orderBy('title', 'asc') -> orderBy('created_at', 'desc') -> paginate(5);
         $posts = User::find(Auth::user()->id)->posts()->orderBy('title', 'asc')->orderBy('created_at', 'desc')->paginate(5);
  
-        return view('posts.myIndex', ['posts' => $posts]);
+        return view('posts.myIndex', compact('posts'));
     }
 
     // public function viewCount(Request $request) {
@@ -191,4 +199,7 @@ class PostsController extends Controller
 
         
     // }
+
+    // 
+
 }

@@ -20,17 +20,24 @@
         <ul class="list-group">
             @foreach($posts as $post)
             <li class="list-group-item">
-                <span>
-                    <a href="{{ route('posts.show', ['id'=>$post->id, 'page'=>$posts->currentPage()]) }}">Title : {{ $post->title }}</a>
-                </span>
+                <div>
+                    <span>
+                        <a href="{{ route('posts.show', ['id'=>$post->id, 'page'=>$posts->currentPage()]) }}">Title : {{ $post->title }}</a>
+                    </span>
+                    <span style="float: right">written on {{ $post->created_at->diffForHumans() }}</span>
+                </div>
 
                 {{-- 컨텐츠 표시 --}}
                 {{-- <div>
+
                     content : {{ $post->content }}
                 </div> --}}
-                
-                <span>written on {{ $post->created_at->diffForHumans() }}</span>
-                <hr>
+                <div class="mb-2">
+                    <span style="float: right">
+                        {{ $post -> count }} 
+                        {{ $post -> count > 0 ? Str::plural('view', $post -> count) : 'view' }}  <!-- view 복수로 표시하는 방법 -->
+                    </span>
+                </div>
             </li>
             @endforeach
         </ul>

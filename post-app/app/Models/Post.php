@@ -28,4 +28,8 @@ class Post extends Model
         return $this->belongsTo(User::class);
 
     }
+    public function viewers () {
+        // return $this->belongsToMany(User::class);   
+        return $this -> belongsToMany(User::class, 'post_user', 'post_id', 'user_id', 'id', 'id', 'users');
+    }
 }
