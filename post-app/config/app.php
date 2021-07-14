@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 return [
 
     /*
@@ -80,7 +82,8 @@ return [
     |
     */
 
-    'locale' => 'ko',
+    // 'locale' => 'ko_KR',
+
 
     /*
     |--------------------------------------------------------------------------
@@ -105,8 +108,12 @@ return [
     | localized telephone numbers, street address information and more.
     |
     */
-
     'faker_locale' => 'en_US',
+    // 'faker_locale' => 'ko_KR',
+    // 'faker_locale' => 'ja-JP',
+
+
+    
 
     /*
     |--------------------------------------------------------------------------

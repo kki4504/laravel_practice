@@ -16,6 +16,7 @@
     <div class="container mt-5">                                     <!-- DB로 파일 보내는HTML 작성시 반드시 필요함-->
         <form action="/posts/store" method="post" autocomplete="off" enctype="multipart/form-data">
             @csrf       <!-- 토큰발행 -->
+            
             <div class="form-group">
                 <label for="title">Title</label>
                 <input type="text" name="title" class="form-control" id="title" value="{{ old('title') }}"> <!--old는 그 전에 입력한것을 유지-->
