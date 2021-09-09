@@ -60,7 +60,7 @@
                 <a href="">Google Login</a>
             </button>
             <button class="bg-yellow-400 bg-white hover:bg-yellow-100 text-gray-800 font-semibold py-2 px-4 border border-yellow-400 rounded shadow">
-                <a href="">Kakao Login</a>
+                <a href="{{ route('kakao.login') }}">Kakao Login</a>
             </button>
         </div>
     </x-auth-card>

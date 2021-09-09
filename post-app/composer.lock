@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c1310681a395c2ddf5b09627b997fde8",
+    "content-hash": "57b12071e678ddc450781abde59ff86b",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2457,6 +2457,47 @@
                 }
             ],
             "time": "2020-08-18T17:17:46+00:00"
+        },
+        {
+            "name": "socialiteproviders/kakao",
+            "version": "4.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SocialiteProviders/Kakao.git",
+                "reference": "0f1210fc3b82fe4f489388cb5d730351797281ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SocialiteProviders/Kakao/zipball/0f1210fc3b82fe4f489388cb5d730351797281ac",
+                "reference": "0f1210fc3b82fe4f489388cb5d730351797281ac",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.2 || ^8.0",
+                "socialiteproviders/manager": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SocialiteProviders\\Kakao\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Doojin So",
+                    "email": "sodoojin@gmail.com"
+                }
+            ],
+            "description": "Kakao OAuth2 Provider for Laravel Socialite",
+            "support": {
+                "source": "https://github.com/SocialiteProviders/Kakao/tree/4.2.2"
+            },
+            "time": "2021-02-24T22:47:43+00:00"
         },
         {
             "name": "socialiteproviders/manager",

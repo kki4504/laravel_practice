@@ -35,5 +35,10 @@ return [
         'client_secret' => env('GITHUB_CLIENT_SECRET'),
         'redirect' => 'http://localhost:8000/github/callback',
     ],
+    'kakao' => [    
+        'client_id' => env('KAKAO_CLIENT_ID'),  
+        'client_secret' => env('KAKAO_CLIENT_SECRET'),  
+        'redirect' => env('KAKAO_REDIRECT_URI') 
+      ],
 
 ];
