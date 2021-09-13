@@ -19,7 +19,13 @@ class PostsController extends Controller
             1. 게시글 리스트를 DB에서 읽어와야지
             2. 게시글 목록 만들어주는 blade 에 읽어온 데이터를 전달하고 실행
         */
-        $posts = Post::all();
+        // select * from posts order by created_at desc
+        // $posts = Post::latest()->get();
+        // $posts = Post::oldest()->get();
+        // $posts = Post::orderBy('created_at', 'desc')->get();
+        
+        $posts = Post::latest()->paginate(10);
+        
         // dd($posts);
         return view('bbs.index', ['posts' => $posts]);
     }
@@ -29,6 +35,8 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function create()
     {
         return view('bbs.create');
@@ -41,17 +49,41 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
+    
 
         $this->validate($request, ['title'=>'required', 'content'=>'required|min:3']);
+        
+        $path = null;
+        $fileName = null;
+
+        if($request->hasFile('image')) {
+            $fileName =  time().'_'.$request->file('image')->getClientOriginalName();
+
+            $path = $request->file('image')->storeAs('public/images', $fileName);
+        }
 
         $input = array_merge($request->all(), ["user_id" => Auth::user()->id]);
+        // 이미지가 있으면 .. $input 
+        if($fileName) {
+            
+            $input = array_merge($input, ["image" => $fileName ]);
+        }
         // $input ["title"=> "suifwe", "content"=> "sfuiowejf", "user_id"=> 1]
-        Post::create($input);
         // redirect 안하면 F5 시 계속 같은 값이 넘어감
+        // mass assignment
+        // Eloquent model의 white list 인  $fillable 에 기술해야 한다.
+        Post::create($input);
+        
+        // Post::crate($input);
+        // $post = new Post;
+        // $post -> title = $input['title'];
+        // $post -> content = $input['content'];
+        // ...
+        // $post -> save();
         return redirect()->route('posts.index');
     }
+    
 
     /**
      * Display the specified resource.
