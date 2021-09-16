@@ -15,4 +15,3 @@ const mix = require('laravel-mix');
      require('tailwindcss')])
     .sass('resources/sass/app.scss', 'public/css')
     .sourceMaps();
-jk
