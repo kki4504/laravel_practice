@@ -107,7 +107,11 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        // $id에 해당하는 포스트를 수정할 수 있는
+        // 페이지를 반환해주면 된다.
+
+        return view('bbs.edit', ['post' => Post::find($id)]);
+
     }
 
     /**
@@ -120,6 +124,35 @@ class PostsController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $this->validate($request, ['title'=>'required', 'content'=>'required|min:3']);
+
+        $path = null;
+        $fileName = null;
+
+        if($request->hasFile('image')) {
+            $fileName =  time().'_'.$request->file('image')->getClientOriginalName();
+
+            $path = $request->file('image')->storeAs('public/images', $fileName);
+        }
+
+        $input = array_merge($request->all(), ["user_id" => Auth::user()->id]);
+        // 이미지가 있으면 .. $input 
+        if($fileName) {
+            
+            $input = array_merge($input, ["image" => $fileName ]);
+        }
+
+        $post = Post::find($id);
+        
+        // 1.
+        // $post->title = $request->title;
+        // $post->content = $request->content;
+
+        // $post->save();
+
+        $post->update(['title' => $request->title, 
+                        'content' => $request->content]);
+
     }
 
     /**
@@ -128,8 +161,11 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    // DI를 항상 먼저 써야함 
+    public function destroy(Request $request, $id)
     {
-        //
+        // DI, Dependency Injection, 의존성 주입
+        Post::find($id)->delete();
+        return redirect()->route('posts.index');
     }
 }
