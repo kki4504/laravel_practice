@@ -1,13 +1,19 @@
 <div class="container">
     <div class="card" style="width: 100%;">
         @if ($post->image)
-            <img src="{{ '/storage/images/'.$post->image }}" class="card-img-top" alt="my post image">
+          <div class="justify-items-center">
+            <img src="{{ '/storage/images/'.$post->image }}" class="card-img-top w-2/4 h-3/4" alt="my post image">
+          </div>
         @else
             <span>첨부 이미지 없음</span>
         @endif
         <div class="card-body">
           <h5 class="card-title">{{ $post->title }}</h5>
           <p class="card-text">{{ $post->content }}</p>
+        </div>
+        <div>
+          <hr />
+          <like-button />
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">등록일: {{ $post->created_at->diffForHumans() }}</li>

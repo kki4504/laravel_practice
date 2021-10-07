@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
@@ -126,23 +127,38 @@ class PostsController extends Controller
         //
         $this->validate($request, ['title'=>'required', 'content'=>'required|min:3']);
 
-        $path = null;
+        $post = Post::find($id);
+        // $post -> title = $request   -> input['title'];
+        $post -> title   = $request -> title;
+        $post -> content = $request -> content;
+
         $fileName = null;
 
-        if($request->hasFile('image')) {
+        if($request->image) {
+            // 이 이미지를 이 게시글의 이미지로 파일시스템에
+            // 저장하고, DB에 반영하기 전에
+            // 기존 이미지가 있다면
+            // 그 이미지를 파일 시스템에서 삭제해줘야 한다.
+            if($post -> image) {
+                Storage::delete('public/images/'.$post->image); 
+                
+            }
             $fileName =  time().'_'.$request->file('image')->getClientOriginalName();
 
-            $path = $request->file('image')->storeAs('public/images', $fileName);
-        }
+            $post -> image = $fileName;
+            $request->file('image')->storeAs('public/images', $fileName);
 
-        $input = array_merge($request->all(), ["user_id" => Auth::user()->id]);
-        // 이미지가 있으면 .. $input 
-        if($fileName) {
+        }
+        $post -> save();
+
+        // $input = array_merge($request->all(), ["user_id" => Auth::user()->id]);
+        // // 이미지가 있으면 .. $input 
+        // if($fileName) {
             
-            $input = array_merge($input, ["image" => $fileName ]);
-        }
+        //     $input = array_merge($input, ["image" => $fileName ]);
+        // }
 
-        $post = Post::find($id);
+        // $post = Post::find($id);
         
         // 1.
         // $post->title = $request->title;
@@ -150,9 +166,10 @@ class PostsController extends Controller
 
         // $post->save();
 
-        $post->update(['title' => $request->title, 
-                        'content' => $request->content]);
-
+        // $post->update(['title' => $request->title, 
+                        // 'content' => $request->content]);
+            
+        return redirect()->route('posts.show', ['post' => $post->id]);
     }
 
     /**
@@ -165,7 +182,24 @@ class PostsController extends Controller
     public function destroy(Request $request, $id)
     {
         // DI, Dependency Injection, 의존성 주입
-        Post::find($id)->delete();
+        $post = Post::find($id);
+
+        // 게시글에 딸린 이미지가 있으면 파일시스템에서도 삭제해줘야 한다.
+        if($post -> image) {
+            Storage::delete('public/images/'.$post->image);
+        }
+        $post -> delete();
+
         return redirect()->route('posts.index');
+    }
+    public function deleteImage($id) {
+        $post = Post::find($id);
+
+        if($post -> image) {
+            Storage::delete('public/image/'.$post->image);
+            $post->image = null;
+            $post->save();
+        }
+        return redirect()->route('posts.edit', ['post'=>$post->id]);
     }
 }

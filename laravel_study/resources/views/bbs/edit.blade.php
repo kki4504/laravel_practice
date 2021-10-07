@@ -17,7 +17,9 @@
         {{-- file보내는 form에서 method="post enctype="multipart" --}}
         <form class="row g-3" 
               action="{{ route('posts.update', ['post' => $post->id]) }}"
-              method="post" 
+              name="editForm"
+              id="editForm"
+              method="post"
               enctype="multipart/form-data">
             @method('patch')
             @csrf
@@ -46,7 +48,11 @@
             </div>
             <div class="col-12 m-2">
                 @if ($post->image)
-                    <img class="w-20 h-20 rounded-full" src="{{ '/storage/images/'.$post->image }}" class="card-img-top" alt="my post image">
+                    <div class="flex item-center">
+                        <img class="w-20 h-20 rounded-full mb-4" src="{{ '/storage/images/'.$post->image }}" class="card-img-top" alt="my post image">
+                
+                        <button onclick="return deleteImage()" class="btn btn-danger h-10 mt-3 ml-3">이미지 삭제</button>
+                    </div>
                 @else
                     <span>첨부 이미지 없음</span>
                 @endif
@@ -57,5 +63,16 @@
               <button type="submit" class="btn btn-primary">글수정</button>
             </div>
         </form>
+        <script>
+            deleteImage = () => {
+                editForm = document.getElementById('editForm');
+                // editForm.delete('_method');
+                editForm._method.value = 'delete';
+                editForm.action = '/posts/images/{{ $post -> id }}';
+                editForm.submit();
+                return ture;
+                // alert('hi~');
+            }
+        </script>
     </div>
 </x-app-layout>
