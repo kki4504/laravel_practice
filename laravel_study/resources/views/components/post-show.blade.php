@@ -13,7 +13,7 @@
         </div>
         <div>
           <hr />
-          <like-button />
+          <like-button :post="{{ $post }}" :loginuser="{{ auth()->user()->id }}" />
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">등록일: {{ $post->created_at->diffForHumans() }}</li>
@@ -32,17 +32,7 @@
           </form>
         </div>
       </div>
-
-      <script>
-        function confirmDelete(e) {
-          myform = document.getElementById('form');
-          flag = confirm('정말 삭제하시겠습니까? ..');
-          if(flag) {
-            // 서브밋
-            myform.submit();
-          }
-          // e.preventDefault(); // form 이 서버로 전달되는 것을 막아준다.
-          // return false;
-        }
-      </script>
+      <div class="card mt-2 mb-5" style="width: 100%; margin:10px">
+        <comment-list :post="{{ $post }}" :loginuser="{{ auth()->user()->id }}"/>
+      </div>
 </div>

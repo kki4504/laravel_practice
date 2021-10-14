@@ -23,7 +23,7 @@ Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::post('/like/{$post}', 
+Route::post('/like/{post}', 
             [LikesController::class, "store"])
             ->middleware(['auth'])->name('like.store');
 

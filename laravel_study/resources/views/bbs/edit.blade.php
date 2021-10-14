@@ -51,7 +51,7 @@
                     <div class="flex item-center">
                         <img class="w-20 h-20 rounded-full mb-4" src="{{ '/storage/images/'.$post->image }}" class="card-img-top" alt="my post image">
                 
-                        <button onclick="return deleteImage()" class="btn btn-danger h-10 mt-3 ml-3">이미지 삭제</button>
+                        <button onclick="return deleteImage({{ $post->id }})" class="btn btn-danger h-10 mt-3 ml-3">이미지 삭제</button>
                     </div>
                 @else
                     <span>첨부 이미지 없음</span>
@@ -64,11 +64,11 @@
             </div>
         </form>
         <script>
-            deleteImage = () => {
+            deleteImage = (id) => {
                 editForm = document.getElementById('editForm');
                 // editForm.delete('_method');
                 editForm._method.value = 'delete';
-                editForm.action = '/posts/images/{{ $post -> id }}';
+                editForm.action = '/posts/images/'+id;
                 editForm.submit();
                 return ture;
                 // alert('hi~');
