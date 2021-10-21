@@ -12,11 +12,10 @@
     </div>
 </template>
 <script>
-import Button from '../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Button.vue'
 import CommentItem from './CommentItem.vue'
     export default {
         props:['post', 'loginuser'],
-        components: {CommentItem, Button},
+        components: {CommentItem},
         data() {
             return {
                 comment:'',
