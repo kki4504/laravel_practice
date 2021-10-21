@@ -6,7 +6,7 @@
   <div class="space-y-4">
     <div class="flex">
       <div class="flex-1 border rounded-lg px-3 py-2 sm:px-6 sm:py-4 leading-relaxed">
-        <strong>{{ comment.user_id }}</strong> <span class="text-xs text-gray-400">{{ comment.updated_at }}</span>
+        <strong>{{ comment.user.name }}</strong> <span class="text-xs text-gray-400">{{ comment.updated_at }}</span>
         <p class="text-sm mt-2" v-if="showTextarea == false">
           {{comment.comment}}
         </p>
