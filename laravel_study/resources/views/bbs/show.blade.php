@@ -7,7 +7,7 @@
             </h2>
             <button 
                 onclick=location.href="{{ route('posts.index') }}" 
-                type="button" 
+                type="button"
                 class="btn btn-info hover:bg-blue-700 font-bold text-white"
                 >
                     목록보기

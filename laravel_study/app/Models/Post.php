@@ -30,6 +30,12 @@ class Post extends Model
     }
 
     public function likes() {
+        // Post -> Post_user -> User
+        // N : M
         return $this->belongsToMany(User::class);
     }
+    
+    // public function comment() {
+    //     return $this->belongsToMany(Comment::class);
+    // }
 }

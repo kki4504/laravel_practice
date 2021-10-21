@@ -1,11 +1,12 @@
 <div class="container">
-    <div class="card" style="width: 100%;">
+  <div class="mx-14">
+    <div class="card mt-4 mx-5">
         @if ($post->image)
           <div class="justify-items-center">
             <img src="{{ '/storage/images/'.$post->image }}" class="card-img-top w-2/4 h-3/4" alt="my post image">
           </div>
         @else
-            <span>첨부 이미지 없음</span>
+            <span class="m-3">첨부 이미지 없음</span>
         @endif
         <div class="card-body">
           <h5 class="card-title">{{ $post->title }}</h5>
@@ -13,7 +14,7 @@
         </div>
         <div>
           <hr />
-          <like-button />
+          <like-button :post="{{ $post }}" :loginuser="{{ auth()->user()->id }}" />
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">등록일: {{ $post->created_at->diffForHumans() }}</li>
@@ -32,17 +33,8 @@
           </form>
         </div>
       </div>
-
-      <script>
-        function confirmDelete(e) {
-          myform = document.getElementById('form');
-          flag = confirm('정말 삭제하시겠습니까? ..');
-          if(flag) {
-            // 서브밋
-            myform.submit();
-          }
-          // e.preventDefault(); // form 이 서버로 전달되는 것을 막아준다.
-          // return false;
-        }
-      </script>
+      <div class="card mt-2 mb-5 mx-5">
+        <comment-list :post="{{ $post }}" :loginuser="{{ auth()->user()->id }}"/>
+      </div>
+  </div>
 </div>

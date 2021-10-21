@@ -76,13 +76,13 @@ class PostsController extends Controller
         // Eloquent model의 white list 인  $fillable 에 기술해야 한다.
         Post::create($input);
         
-        // Post::crate($input);
+        // Post::create($input);
         // $post = new Post;
         // $post -> title = $input['title'];
         // $post -> content = $input['content'];
         // ...
         // $post -> save();
-        return redirect()->route('posts.index');
+        return redirect()->route('posts.index')->with('success', 1);
     }
     
 
@@ -95,7 +95,8 @@ class PostsController extends Controller
     public function show($id)
     {
         // $id에 해당하는 Post를 데이터베이스에서 인출
-        $post = Post::find($id);
+        // eager loading (즉시로딩)
+        $post = Post::with('likes')->find($id);
         // 그 놈을 상세보기 뷰로 전달한다.
         return view('bbs.show', ['post' => $post]);
     }

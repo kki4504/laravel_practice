@@ -4,6 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -33,4 +35,30 @@
             </main>
         </div>
     </body>
+    <script>
+        @if (session('success'))
+            showSuccessMsg();
+        @endif
+
+        function confirmDelete(e) {
+          myform = document.getElementById('form');
+          flag = confirm('정말 삭제하시겠습니까? ..');
+          if(flag) {
+            // 서브밋
+            myform.submit();
+          }
+          // e.preventDefault(); // form 이 서버로 전달되는 것을 막아준다.
+          // return false;
+        }
+
+        function showSuccessMsg() {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your Post has been saved',
+                showConfirmButton: false,
+                timer:1500
+            })
+        }
+    </script>
 </html>
