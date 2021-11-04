@@ -1,5 +1,5 @@
 <template>
-    <div class="m-3">
+    <div class="m-3 rounded">
         <div class="form-group mt-2">
             <label class="block text-left" style="max-width: 100%;">
                 <span class="text-gray-700">댓글 작성</span>
@@ -8,14 +8,16 @@
             <button class="btn btn-outline-success" type="submit" @click="storeCommnet">댓글 작성</button>
         </div>
         <button class="btn btn-outline-info textcolor-white mt-4 btn-block" @click="getComment">댓글 불러오기</button>
-        <comment-item v-for="(comment, index) in comments" :key="index" :comment="comment" class="mt-3 w-100" @deleteComment="getComment" />
+        <comment-item v-for="(comment, index) in comments.data" :key="index" :comment="comment" class="mt-3 w-100" @deleteComment="getComment" />
+        <comment-pagination class="mt-3" v-if="comments.data != null" :links="comments.links" @pageClicked="getPage($event)"/>
     </div>
 </template>
 <script>
 import CommentItem from './CommentItem.vue'
+import CommentPagination from './CommentPagination.vue'
     export default {
         props:['post', 'loginuser'],
-        components: {CommentItem},
+        components: {CommentItem, CommentPagination},
         data() {
             return {
                 comment:'',
@@ -23,9 +25,18 @@ import CommentItem from './CommentItem.vue'
             }
         },
         methods: {
+            getPage(url) {
+                axios.get(url)
+                .then(res => {
+                    this.comments = res.data;
+                })
+                .catch(err => {
+                    console.log(err.message);
+                })
+            },
             getComment(){
                 axios
-                    .get('/posts/comment/index/'+this.post.id)
+                    .get('/comment/index/'+this.post.id)
                     .then(res => {
                         this.comments = res.data;
                         return console.log(res);
@@ -44,9 +55,8 @@ import CommentItem from './CommentItem.vue'
                 console.log(this.comment);
                 // console.log(this.post);
                 axios
-                    .post('/posts/comment/store/'+this.post.id, {'comment' : this.comment})
+                    .post('/comment/store/'+this.post.id, {'comment' : this.comment})
                     .then(res => {
-                        console.log(res);
                         this.getComment();
                     })
                     .catch(err => {

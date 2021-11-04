@@ -25,7 +25,8 @@ class CommentsController extends Controller
             select * from comments where post_id = ?
             order by created_at desc;
         */
-        $comments = Comment::where('post_id', $postId)->with('user')->get();
+      
+        $comments = Comment::where('post_id', $postId)->with('user')->latest()->paginate(5);
         
         return $comments;
     }
@@ -40,6 +41,12 @@ class CommentsController extends Controller
     }
 
     public function destroy($comment_id) {
+        /*
+            comments 테이블에서 id가 $commentId인 레코드를 삭제
+            1. RAW query
+            2. DB Query Builder
+            3. Eloquent
+        */
         $comment = Comment::find($comment_id);
 
         $comment -> delete();
@@ -48,9 +55,18 @@ class CommentsController extends Controller
     }
 
     public function store($postId, Request $request) {
-        
+        /* 첫 번째 방법: 
+            comment 객체를 생성하고,
+            이 객체의 멤버변수 (프로퍼티) 를 설정하고
+            save();
+
+            두번째 방법 :
+            comment::create([]);
+
+            validation check
+        */
         // 지양함.
-        $temp = array_merge(['comment' => $request -> comment], ['user_id' => Auth::user()->id]);
+        $temp = array_merge(['comment' => $request -> comment], ['user_id' => auth()->user()->id]);
         $temp = array_merge($temp, ['post_id' => $postId]);
         Comment::create($temp);
         // $temp = $request->comment;   

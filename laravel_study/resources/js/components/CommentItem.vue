@@ -46,7 +46,7 @@ export default {
       updateComment() {
             console.log('Start Upate');
             axios
-                .patch('/posts/comment/update/' + this.comment.id, {
+                .patch('/comment/update/' + this.comment.id, {
                     'comment':this.comment.comment
                 }).then(res => {
                   this.showText();
@@ -58,7 +58,7 @@ export default {
       deleteComment() {
             console.log('Delete Comment');
             axios
-              .delete('/posts/comment/delete/' + this.comment.id)
+              .delete('/comment/delete/' + this.comment.id)
               .then(res => {
                 this.$emit('deleteComment');
                 console.log('Delete Success');

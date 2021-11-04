@@ -26,9 +26,10 @@ class PostsController extends Controller
         // $posts = Post::orderBy('created_at', 'desc')->get();
         
         $posts = Post::latest()->paginate(10);
-        
         // dd($posts);
-        return view('bbs.index', ['posts' => $posts]);
+        
+
+        return view ('bbs.index', ['posts' => $posts]);
     }
 
     /**
@@ -202,5 +203,13 @@ class PostsController extends Controller
             $post->save();
         }
         return redirect()->route('posts.edit', ['post'=>$post->id]);
+    }
+    public function myIndex() {
+        $user_id = auth()->user()->id;
+        $posts = Post::where('user_id', $user_id)->latest()->paginate(10);
+        // dd($posts);
+        // $posts = Post::latest()->paginate(10);
+        
+        return view('bbs.myIndex', ['posts' => $posts]);
     }
 }

@@ -9,6 +9,7 @@ require('./bootstrap');
 window.Vue = require('vue').default;
 
 import Alpine from 'alpinejs';
+import Vue from 'vue';
 
 window.Alpine = Alpine;
 
@@ -32,6 +33,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('like-button', require('./components/LikeButton.vue').default);
 Vue.component('comment-list', require('./components/CommentList.vue').default);
 Vue.component('comment-Item', require('./components/CommentItem.vue').default);
+Vue.component('comment-pagination', require('./components/CommentPagination').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

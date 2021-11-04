@@ -53,7 +53,7 @@
 
         function showSuccessMsg() {
             Swal.fire({
-                position: 'top-end',
+                position: 'center',
                 icon: 'success',
                 title: 'Your Post has been saved',
                 showConfirmButton: false,
