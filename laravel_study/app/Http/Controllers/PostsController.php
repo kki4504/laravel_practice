@@ -108,10 +108,16 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
+        // 의존성 주입
+        // DI(Dependency Injection)
+
         // $id에 해당하는 포스트를 수정할 수 있는
         // 페이지를 반환해주면 된다.
+        $post = Post::find($id);
+
+        $this->authorize('update', $post);
 
         return view('bbs.edit', ['post' => Post::find($id)]);
 
@@ -190,13 +196,14 @@ class PostsController extends Controller
         if($post -> image) {
             Storage::delete('public/images/'.$post->image);
         }
+        
         $post -> delete();
 
         return redirect()->route('posts.index');
     }
     public function deleteImage($id) {
         $post = Post::find($id);
-
+        $this->authorize('delete', $post);
         if($post -> image) {
             Storage::delete('public/image/'.$post->image);
             $post->image = null;

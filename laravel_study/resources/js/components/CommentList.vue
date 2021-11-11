@@ -8,8 +8,8 @@
             <button class="btn btn-outline-success" type="submit" @click="storeCommnet">댓글 작성</button>
         </div>
         <button class="btn btn-outline-info textcolor-white mt-4 btn-block" @click="getComment">댓글 불러오기</button>
-        <comment-item v-for="(comment, index) in comments.data" :key="index" :comment="comment" class="mt-3 w-100" @deleteComment="getComment" />
-        <comment-pagination class="mt-3" v-if="comments.data != null" :links="comments.links" @pageClicked="getPage($event)"/>
+        <comment-item v-for="(comment, index) in comments.data" :key="index" :comment="comment" :login_user_id="loginuser" class="mt-3 w-100" @deleteComment="getComment" />
+        <comment-pagination class="mt-3 flex justify-center" v-if="comments.data != null" :links="comments.links" @pageClicked="getPage($event)"/>
     </div>
 </template>
 <script>

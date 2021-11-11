@@ -34,13 +34,15 @@ class CommentsController extends Controller
     public function update(Request $request, $comment_id) {
         $comment = Comment::find($comment_id);
 
+        $this->authorize('update', $comment);
+        
         $comment -> comment = $request -> comment;
         $comment->save();
         
         return 'update method in Controller is complete';
     }
 
-    public function destroy($comment_id) {
+    public function destroy(Request $request, $comment_id) {
         /*
             comments 테이블에서 id가 $commentId인 레코드를 삭제
             1. RAW query
@@ -49,9 +51,19 @@ class CommentsController extends Controller
         */
         $comment = Comment::find($comment_id);
 
-        $comment -> delete();
+        // CommentPolicy를 적용한 권한관리를 하자.
+        // 즉 이 요청을 한 사용자가 이 댓글을 삭제할 수 있는지 체크하자.
+        // $this-> authorize('delete', $comment); 
+        if($request -> user() -> can('delete', $comment)) { 
+            $comment -> delete();
+
+            return 'destroy method in Controller is complete';
+            
+        } else { // 삭제 권한이 없는 경우
+            abort(403);
+        }
         
-        return 'destroy method in Controller is complete';
+        
     }
 
     public function store($postId, Request $request) {
